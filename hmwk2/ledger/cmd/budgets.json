@@ -1,0 +1,17 @@
+[
+  {
+    "category": "Food",
+    "limit": 5000,
+    "period": 2592000
+  },
+  {
+    "category": "Transport",
+    "limit": 2000,
+    "period": 2592000
+  },
+  {
+    "category": "Shopping",
+    "limit": 10000,
+    "period": 2592000
+  }
+]
