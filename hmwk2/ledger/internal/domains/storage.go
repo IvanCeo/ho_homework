@@ -7,6 +7,17 @@ import (
 	"encoding/json"
 )
 
+type Validatable interface {
+	Validate() error
+}
+
+func CheckValid(v Validatable) error {
+	if err := v.Validate(); err != nil {
+		return err
+	}
+	return nil
+}
+
 type Storage struct {
 	transactions []Transaction
 	budgets map[string]Budget
@@ -39,18 +50,21 @@ func NewStorage() *Storage {
 }
 
 func (s *Storage) SetBudget(bd Budget) error {
+	if err := CheckValid(&bd); err != nil {
+		return err
+	}
 	s.budgets[bd.Category] = bd
 	fmt.Printf("Budget %s successfully setted\n", bd.Category)
 	return nil
 }
 
 func (s *Storage) AddTransaction(tx Transaction) error {
-	if tx.Amount == 0 {
-		return fmt.Errorf("transaction amount cannot be zero")
-	}
-
 	if tx.Date.IsZero() {
 		tx.Date = time.Now()
+	}
+
+	if err := CheckValid(&tx); err != nil {
+		return fmt.Errorf("AddTrasaction error: %w", err)
 	}
 
 	if budget, ok := s.budgets[tx.Category]; ok {
