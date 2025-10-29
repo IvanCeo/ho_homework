@@ -18,10 +18,10 @@ type Handler struct {
 }
 
 type CreateTransactionRequest struct {
-	Amount      string `json:"amount"`
-	Category    string `json:"category"`
-	Description string `json:"description,omitempty"`
-	Date        string `json:"date"`
+	Amount      string    `json:"amount"`
+	Category    string    `json:"category"`
+	Description string    `json:"description,omitempty"`
+	Date        time.Time `json:"date"`
 }
 
 type TransactionResponse struct {
@@ -37,16 +37,17 @@ func CreateTransactionRequestToDomainTransaction(req *CreateTransactionRequest) 
 	if err != nil {
 		return nil, err
 	}
-	var d time.Time
-	err = d.UnmarshalJSON([]byte(req.Date))
-	if err != nil {
-		return nil, err
-	}
+
+	// d, err := time.Parse(time.RFC3339, req.Date)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
 	return &domain.Transaction{
 		Amount:      amount,
 		Category:    req.Category,
 		Description: req.Description,
-		Date:        d,
+		Date:        req.Date,
 	}, nil
 }
 
@@ -97,4 +98,13 @@ func (h *Handler) CreateTransactionHandle(c *fiber.Ctx) error {
 	j, _ := json.Marshal(res)
 
 	return c.Status(201).Send(j)
+}
+
+func (h *Handler) GetTransactionsHandle(c *fiber.Ctx) error {
+	transactions := h.server.ListTransactions() //[]domain.Transaction
+	var res []*TransactionResponse
+	for _, row := range transactions {
+		res = append(res, DomainTransactionToTransactionResponse(&row))
+	}
+	return c.JSON(res)
 }

@@ -9,7 +9,8 @@ import (
 func Route(app *fiber.App, handler *ledger.Handler) {
 	api := app.Group("/api")
 
-	api.Post("/transactions", handler.CreateTransactionHandle)
-	// api.Get("/transactions", GetTransactions)
-	// api.Post("/budgets", CreateBudget)
+	api.Post("/transactions", (handler.CreateTransactionHandle))
+	api.Get("/transactions", handler.GetTransactionsHandle)
+	api.Post("/budgets", handler.CreateBudgetHandle)
+	api.Get("/budgets", handler.GetBudgetsHandle)
 }

@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"ledger/pkg/domain"
 	"io"
+	"ledger/pkg/domain"
 )
 
 type Storage interface {
@@ -10,6 +10,7 @@ type Storage interface {
 	SetBudget(domain.Budget) error
 	AddTransaction(domain.Transaction) error
 	ListTransactions() []domain.Transaction
+	ListBudgets() []domain.Budget
 }
 
 type Ledger struct {
@@ -17,7 +18,7 @@ type Ledger struct {
 }
 
 func NewLedger(s Storage) *Ledger {
-    return &Ledger{storage: s}
+	return &Ledger{storage: s}
 }
 
 func (l *Ledger) SetBudget(bd domain.Budget) error {
@@ -38,4 +39,8 @@ func (l *Ledger) AddTransaction(tx domain.Transaction) error {
 
 func (l *Ledger) ListTransactions() []domain.Transaction {
 	return l.storage.ListTransactions()
+}
+
+func (l *Ledger) ListBudgets() []domain.Budget {
+	return l.storage.ListBudgets()
 }

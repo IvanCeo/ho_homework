@@ -9,13 +9,13 @@ import (
 
 type Storage struct {
 	transactions []domain.Transaction
-	budgets map[string]domain.Budget
+	budgets      map[string]domain.Budget
 }
 
 func NewStorage() *Storage {
 	return &Storage{
 		transactions: make([]domain.Transaction, 0),
-		budgets: make(map[string]domain.Budget, 0),
+		budgets:      make(map[string]domain.Budget, 0),
 	}
 }
 
@@ -69,5 +69,13 @@ func (s *Storage) AddTransaction(tx domain.Transaction) error {
 func (s *Storage) ListTransactions() []domain.Transaction {
 	res := make([]domain.Transaction, len(s.transactions))
 	copy(res, s.transactions)
+	return res
+}
+
+func (s *Storage) ListBudgets() []domain.Budget {
+	var res []domain.Budget
+	for _, row := range s.budgets {
+		res = append(res, row)
+	}
 	return res
 }
