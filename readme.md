@@ -17,6 +17,7 @@ make test
 
 ## Сервис Gateway
 
+В сервисе доступны 4 эндпоинта: создание транзакции, создание бюджета, список транзакций, список бюджетов.
 Для запуска теста работы сервиса Gateway запустите команды
 ```bash
 cd hmwk2/gateway/cmd/server
@@ -32,7 +33,8 @@ curl -X POST http://127.0.0.1:8080/api/budgets \
     "limit": "3000",
     "Period": "1291309712"
   }'
-``````bash
+```
+```bash
 curl -X POST http://127.0.0.1:8080/api/budgets \
   -H "Content-Type: application/json" \
   -d '{
